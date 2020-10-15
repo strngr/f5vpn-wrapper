@@ -1,0 +1,21 @@
+#!/bin/bash
+
+USERID=$(id -u)
+
+/usr/bin/docker run \
+    -t \
+    --rm \
+    --net=host \
+    --cap-add=NET_ADMIN \
+    --device=/dev/net/tun \
+    -e DISPLAY \
+    -e DBUS_SESSION_BUS_ADDRESS \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v /run/user/$USERID:/run/user/$USERID \
+    -v /opt/f5/vpn/:/opt/f5/vpn/ \
+    --user $USERID \
+    strngr/f5vpn-env \
+    /opt/f5/vpn/f5vpn \
+    $@
+
+
